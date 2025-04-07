@@ -8,28 +8,28 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var db *gorm.DB
 
 func InitDB() {
 	var err error
-	DB, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	db, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
 	// Auto-migrate the schema
-	err = DB.AutoMigrate(&models.Submission{})
+	err = db.AutoMigrate(&models.Submission{})
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
 }
 
 func CreateSubmission(submission *models.Submission) error {
-	return DB.Create(submission).Error
+	return db.Create(submission).Error
 }
 
 func GetSubmissions() ([]models.Submission, error) {
 	var submissions []models.Submission
-	err := DB.Order("created_at DESC").Find(&submissions).Error
+	err := db.Order("created_at DESC").Find(&submissions).Error
 	return submissions, err
 }

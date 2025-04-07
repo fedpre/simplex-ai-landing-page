@@ -7,7 +7,6 @@ import (
 
 	"github.com/federicopregnolato/simplexai-landing-page/internal/config"
 	"github.com/federicopregnolato/simplexai-landing-page/internal/database"
-	"github.com/federicopregnolato/simplexai-landing-page/internal/middleware"
 	"github.com/federicopregnolato/simplexai-landing-page/internal/models"
 	"github.com/federicopregnolato/simplexai-landing-page/internal/utils"
 )
@@ -26,21 +25,12 @@ func NewAdminHandler(cfg *config.Config, tmplAdmin *template.Template) *AdminHan
 
 func (h *AdminHandler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /admin", h.handleAdminPage)
-	mux.HandleFunc("POST /admin/login", middleware.CSRFMiddleware(h.handleLogin))
-	mux.HandleFunc("POST /admin/logout", middleware.CSRFMiddleware(h.handleLogout))
+	mux.HandleFunc("POST /admin/login", h.handleLogin)
+	mux.HandleFunc("POST /admin/logout", h.handleLogout)
 }
 
 func (h *AdminHandler) handleAdminPage(w http.ResponseWriter, r *http.Request) {
 	isAuth := utils.IsAuthenticated(r)
-
-	var csrfToken string
-	csrfCookie, err := r.Cookie("csrf_token")
-	if err != nil || csrfCookie.Value == "" {
-		csrfToken = utils.GenerateCSRFToken()
-		http.SetCookie(w, utils.NewSecureCookie("csrf_token", csrfToken, time.Now().Add(h.config.CookieDuration)))
-	} else {
-		csrfToken = csrfCookie.Value
-	}
 
 	// Get error message from query parameter
 	loginError := ""
@@ -51,7 +41,6 @@ func (h *AdminHandler) handleAdminPage(w http.ResponseWriter, r *http.Request) {
 	if !isAuth {
 		data := models.AdminPageData{
 			IsAuthenticated: false,
-			CSRFToken:       csrfToken,
 			LoginError:      loginError,
 		}
 		h.tmplAdmin.Execute(w, data)
@@ -67,7 +56,6 @@ func (h *AdminHandler) handleAdminPage(w http.ResponseWriter, r *http.Request) {
 
 	data := models.AdminPageData{
 		IsAuthenticated: true,
-		CSRFToken:       csrfToken,
 		Submissions:     submissions,
 	}
 	h.tmplAdmin.Execute(w, data)

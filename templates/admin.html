@@ -45,7 +45,6 @@
             </div>
             <div class="flex items-center">
               <form method="POST" action="/admin/logout">
-                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
                 <button
                   type="submit"
                   class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
@@ -129,8 +128,6 @@
         {{end}}
 
         <form class="mt-8 space-y-6" method="POST" action="/admin/login">
-          <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
-
           <div class="space-y-4">
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700"

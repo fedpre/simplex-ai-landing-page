@@ -2,3 +2,4 @@
 app.db
 *.db
 .DS_Store
+tailwindcss

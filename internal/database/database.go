@@ -26,7 +26,6 @@ func InitDB() {
 		DSN:        url,
 	}
 
-	// db, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
 	db, err = gorm.Open(sqlite.New(sqliteCfg), &gorm.Config{})
 
 	if err != nil {

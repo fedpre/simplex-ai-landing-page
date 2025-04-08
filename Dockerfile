@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the application from the correct directory
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd
 
 # Final stage
 FROM alpine:latest

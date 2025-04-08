@@ -15,7 +15,7 @@ import (
 
 func getProjectRoot() string {
 	_, filename, _, _ := runtime.Caller(0)
-	return filepath.Dir(filepath.Dir(filepath.Dir(filename)))
+	return filepath.Dir(filepath.Dir(filename))
 }
 
 func main() {
@@ -65,7 +65,5 @@ func main() {
 	}
 
 	log.Printf("Server starting on port %s", port)
-	if err := http.ListenAndServe(":"+port, mux); err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(http.ListenAndServe(":"+port, mux))
 }

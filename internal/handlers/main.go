@@ -43,13 +43,11 @@ func (h *MainHandler) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	name := r.FormValue("name")
 	email := r.FormValue("email")
-	message := r.FormValue("message")
 
 	// Create submission in database
 	submission := &models.Submission{
 		Name:      name,
 		Email:     email,
-		Message:   message,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

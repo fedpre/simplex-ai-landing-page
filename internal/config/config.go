@@ -9,12 +9,11 @@ import (
 )
 
 type Config struct {
-	Port            string
-	AdminEmail      string
-	AdminPassword   string
-	Environment     string
-	CSRFTokenLength int
-	CookieDuration  time.Duration
+	Port           string
+	AdminEmail     string
+	AdminPassword  string
+	Environment    string
+	CookieDuration time.Duration
 }
 
 func LoadConfig() *Config {
@@ -28,12 +27,11 @@ func LoadConfig() *Config {
 	adminPassword := getEnv("ADMIN_PASSWORD", "admin")
 
 	return &Config{
-		Port:            getEnv("PORT", "8080"),
-		AdminEmail:      adminEmail,
-		AdminPassword:   adminPassword,
-		Environment:     getEnv("ENVIRONMENT", "development"),
-		CSRFTokenLength: 32,
-		CookieDuration:  time.Hour,
+		Port:           getEnv("PORT", "8080"),
+		AdminEmail:     adminEmail,
+		AdminPassword:  adminPassword,
+		Environment:    getEnv("ENVIRONMENT", "development"),
+		CookieDuration: time.Hour,
 	}
 }
 

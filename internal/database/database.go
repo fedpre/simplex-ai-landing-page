@@ -1,18 +1,34 @@
 package database
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/federicopregnolato/simplexai-landing-page/internal/models"
-	"github.com/glebarez/sqlite"
+
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
 var db *gorm.DB
 
 func InitDB() {
 	var err error
-	db, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	dbUrl := os.Getenv("TURSO_URL")
+	dbToken := os.Getenv("TURSO_TOKEN")
+	url := fmt.Sprintf("%s?authToken=%s", dbUrl, dbToken)
+
+	sqliteCfg := sqlite.Config{
+		DriverName: "libsql",
+		DSN:        url,
+	}
+
+	// db, err = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	db, err = gorm.Open(sqlite.New(sqliteCfg), &gorm.Config{})
+
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}

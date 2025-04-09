@@ -19,11 +19,17 @@ func InitDB() {
 	var err error
 	dbUrl := os.Getenv("TURSO_URL")
 	dbToken := os.Getenv("TURSO_TOKEN")
+	env := os.Getenv("ENVIRONMENT")
 	url := fmt.Sprintf("%s?authToken=%s", dbUrl, dbToken)
+
+	dns := url
+	if env == "development" {
+		dns = "file:app.db"
+	}
 
 	sqliteCfg := sqlite.Config{
 		DriverName: "libsql",
-		DSN:        url,
+		DSN:        dns,
 	}
 
 	db, err = gorm.Open(sqlite.New(sqliteCfg), &gorm.Config{})
